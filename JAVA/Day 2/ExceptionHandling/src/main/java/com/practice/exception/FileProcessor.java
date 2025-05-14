@@ -1,15 +1,30 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+package main.java.com.practice.exception;
+
+import java.io.*;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 public class FileProcessor {
     private static final Logger logger = Logger.getLogger(FileProcessor.class.getName());
     public static void main(String[] args) {
 
-        String filePath = "src/resources/input.txt";
+        String filePath ="";
+        try(InputStream input = new FileInputStream("src/main/resources/application.properties")){
+
+            Properties pr = new Properties();
+            if(input == null){
+                logger.severe("File path is not correct");
+                return;
+            }
+            pr.load(input);
+            filePath = (pr.getProperty("file_path"));
+         }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+
         String line;
+
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))){
 
