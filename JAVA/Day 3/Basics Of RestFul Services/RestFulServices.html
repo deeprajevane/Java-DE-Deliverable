@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basics of RESTful Services (HTTP, Verbs, Status Codes, REST constraints)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .note {
+            background-color: #e7f4ff;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+<h1>RESTful Principles Applied</h1>
+
+<h2>1. HTTP Verbs in REST</h2>
+<p>RESTful services use standard HTTP methods to perform operations on resources:</p>
+
+<table>
+    <thead>
+    <tr>
+        <th>Action</th>
+        <th>HTTP Verb</th>
+        <th>Endpoint</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>List all products</td>
+        <td>GET</td>
+        <td>/products</td>
+        <td>Retrieve all products</td>
+    </tr>
+    <tr>
+        <td>Get a product by ID</td>
+        <td>GET</td>
+        <td>/products/{id}</td>
+        <td>Retrieve one specific product</td>
+    </tr>
+    <tr>
+        <td>Create a new product</td>
+        <td>POST</td>
+        <td>/products</td>
+        <td>Add a new product to the collection</td>
+    </tr>
+    <tr>
+        <td>Update a product</td>
+        <td>PUT</td>
+        <td>/products/{id}</td>
+        <td>Replace the entire product with new data</td>
+    </tr>
+    <tr>
+        <td>Delete a product</td>
+        <td>DELETE</td>
+        <td>/products/{id}</td>
+        <td>Remove a product from the collection</td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>2. HTTP Status Codes</h2>
+<p>Proper status codes help clients understand the result of their requests:</p>
+
+<table>
+    <thead>
+    <tr>
+        <th>Scenario</th>
+        <th>Status Code</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Product created</td>
+        <td>201</td>
+        <td>Resource successfully created</td>
+    </tr>
+    <tr>
+        <td>Product found</td>
+        <td>200</td>
+        <td>Successfully retrieved the resource</td>
+    </tr>
+    <tr>
+        <td>Product not found</td>
+        <td>404</td>
+        <td>Requested resource does not exist</td>
+    </tr>
+    <tr>
+        <td>Product updated</td>
+        <td>200</td>
+        <td>Resource successfully updated</td>
+    </tr>
+    <tr>
+        <td>Product deleted</td>
+        <td>204</td>
+        <td>No content, successfully deleted</td>
+    </tr>
+    <tr>
+        <td>Invalid input</td>
+        <td>400</td>
+        <td>Bad request (client-side error)</td>
+    </tr>
+    <tr>
+        <td>Internal server error</td>
+        <td>500</td>
+        <td>Server failed to process the request</td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>3. Why Idempotency Matters</h2>
+<div class="note">
+    <p><strong>Idempotent methods:</strong> GET, PUT, DELETE</p>
+    <p>These operations produce the same result no matter how many times they are repeated. For example:</p>
+    <ul>
+        <li>Calling <code>DELETE /products/10</code> multiple times still results in product 10 being deleted (or already gone).</li>
+        <li><code>PUT /products/10</code> with the same body always results in the same resource state.</li>
+    </ul>
+
+    <p><strong>Non-idempotent method:</strong> POST</p>
+    <p>Repeating <code>POST /products</code> may create multiple products — not safe for automatic retries unless handled with deduplication logic (e.g., idempotency keys).</p>
+</div>
+
+<h2>Key REST Constraints</h2>
+<ul>
+    <li><strong>Client-Server Architecture:</strong> Separation of concerns between client and server</li>
+    <li><strong>Statelessness:</strong> Each request contains all necessary information</li>
+    <li><strong>Cacheability:</strong> Responses should define if they can be cached</li>
+    <li><strong>Uniform Interface:</strong> Consistent resource identification and manipulation</li>
+    <li><strong>Layered System:</strong> Client doesn't need to know if it's communicating with end server or intermediary</li>
+</ul>
+</body>
+</html>
