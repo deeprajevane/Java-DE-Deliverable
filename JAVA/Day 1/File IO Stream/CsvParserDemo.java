@@ -7,8 +7,8 @@ import java.util.List;
 public class CsvParserDemo {
     public static void main(String[] args) {
         try {
-            // Legacy I/O example
-            File legacyInput = new File("employee.csv");
+
+            File legacyInput = new File("src/resources/employee.csv");
             List<Employee> employeesLegacy = CsvParser.parseEmployees(legacyInput);
             CsvParser.writeFilteredEmployeesLegacy(
                     employeesLegacy,
@@ -16,8 +16,8 @@ public class CsvParserDemo {
                     "IT",
                     50000.0);
 
-            // NIO.2 example
-            Path modernInput = Paths.get("employee.csv");
+
+            Path modernInput = Paths.get("src/resources/employee.csv");
             List<Employee> employeesModern = ModernCsvParser.parseEmployees(modernInput);
             ModernCsvParser.writeFilteredEmployeesModern(
                     employeesModern,

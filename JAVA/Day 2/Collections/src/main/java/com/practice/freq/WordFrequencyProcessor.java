@@ -1,19 +1,21 @@
+package main.java.com.practice.freq;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.*;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
+import java.util.logging.Logger;
 
 public class WordFrequencyProcessor {
 
-
-    @FunctionalInterface
-    interface WordFormatter {
-        String format(String word, Long frequency);
-    }
+    private static final Logger logger = Logger.getLogger(WordFrequencyProcessor.class.getName());
 
     public static void main(String[] args) throws IOException {
-        String filePath = "sample.txt";
+
+        String filePath = "src/resources/sample.txt";
+
         int topN = 5;
         int minLength = 4;
 
@@ -42,6 +44,6 @@ public class WordFrequencyProcessor {
         WordFormatter formatter = (word, freq) -> String.format("Word: %-10s | Frequency: %d", word, freq);
 
 
-        topWords.forEach(entry -> System.out.println(formatter.format(entry.getKey(), entry.getValue())));
+        topWords.forEach(entry -> logger.info(formatter.format(entry.getKey(), entry.getValue())));
     }
 }

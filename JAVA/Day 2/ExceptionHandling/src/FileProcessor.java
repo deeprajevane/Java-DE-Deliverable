@@ -1,35 +1,28 @@
-import java.io.*;
-
-class ParsingException extends Exception {
-    public ParsingException(String message) {
-        super(message);
-    }
-}
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 public class FileProcessor {
+    private static final Logger logger = Logger.getLogger(FileProcessor.class.getName());
     public static void main(String[] args) {
-        String filePath = "input.txt";
-        BufferedReader reader = null;
 
-        try {
-            reader = new BufferedReader(new FileReader(filePath));
-            String line;
+        String filePath = "src/resources/input.txt";
+        String line;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))){
+
+
             while ((line = reader.readLine()) != null) {
                 processLine(line);
             }
         } catch (FileNotFoundException e) {
-            System.out.println("Error: File not found.");
+            logger.severe("Error: File not found.");
         } catch (IOException e) {
-            System.out.println("Error reading the file.");
+            logger.severe("Error reading the file.");
         } catch (ParsingException e) {
-            System.out.println("Parsing error: " + e.getMessage());
-        } finally {
-            try {
-                if (reader != null) reader.close();
-                System.out.println("File closed.");
-            } catch (IOException e) {
-                System.out.println("Error closing the file.");
-            }
+            logger.severe("Parsing error: " + e.getMessage());
         }
     }
 
@@ -38,7 +31,7 @@ public class FileProcessor {
             throw new ParsingException("Invalid line format: " + line);
         } else {
             String[] parts = line.split(":");
-            System.out.println("Name: " + parts[0] + ", Value: " + parts[1]);
+            logger.info("Name: " + parts[0] + ", Value: " + parts[1]);
         }
     }
 }
