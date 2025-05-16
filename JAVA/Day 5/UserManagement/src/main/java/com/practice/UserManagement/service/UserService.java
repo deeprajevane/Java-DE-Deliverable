@@ -61,4 +61,8 @@ public class UserService {
          throw new RuntimeException("Simulating failure");
 
     }
+
+    public Optional <User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 }
