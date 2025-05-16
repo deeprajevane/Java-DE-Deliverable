@@ -29,9 +29,9 @@ public class UserController {
         return ResponseEntity.ok("Transaction completed");
 
     }
-    @GetMapping("/users/{email}")
-    public User getUser(@PathVariable String email) {
-        return userService.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
+    @GetMapping("/users/email")
+    public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
+        User user = userService.findByEmail(email);
+        return ResponseEntity.ok(user);
     }
 }
