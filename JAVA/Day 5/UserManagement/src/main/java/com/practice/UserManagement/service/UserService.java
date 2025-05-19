@@ -58,11 +58,17 @@ public class UserService {
         addressRepository.saveAll(List.of(address1, address2));
 
 
-         throw new RuntimeException("Simulating failure");
+//         throw new RuntimeException("Simulating failure");
 
     }
 
-    public Optional <User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(()-> new UserNotFoundException(email));
+    }
+
+    public User getUserById(Long id){
+        return userRepository.findById(id)
+                .orElseThrow(()-> new UserNotFoundException(id));
     }
 }
