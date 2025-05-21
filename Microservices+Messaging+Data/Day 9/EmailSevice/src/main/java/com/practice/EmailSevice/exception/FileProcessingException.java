@@ -1,4 +1,4 @@
-package com.practice.Employee.exception;
+package com.practice.EmailSevice.exception;
 
 
 public class FileProcessingException extends Throwable {
