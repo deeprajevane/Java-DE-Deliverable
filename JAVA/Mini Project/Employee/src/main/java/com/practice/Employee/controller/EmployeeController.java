@@ -48,16 +48,19 @@ public class EmployeeController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeDTO> get(@PathVariable Long id) {
+        log.info("Employee fetched with id");
         return ResponseEntity.ok(service.get(id));
     }
 
     @GetMapping
     public ResponseEntity<List<EmployeeDTO>> getAll() {
+        log.info("List of Employees Fetched");
         return ResponseEntity.ok(service.getAll());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeDTO> update(@PathVariable Long id, @RequestBody @Valid EmployeeDTO employeeDto) {
+        log.info("Employees Updated successfully");
         return ResponseEntity.ok(service.update(id, employeeDto));
     }
 
@@ -66,6 +69,7 @@ public class EmployeeController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         service.delete(id);
+        log.info("Employee Deleted");
         return ResponseEntity.ok("Employee Deleted successfully");
     }
 
@@ -77,6 +81,7 @@ public class EmployeeController {
         String fileType = FilenameUtils.getExtension(file.getOriginalFilename());
 
         ByteArrayOutputStream result = service.importEmployeeData(file.getInputStream(), fileType);
+        log.info("Employees Imported with Excel File ");
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=result.xlsx")
