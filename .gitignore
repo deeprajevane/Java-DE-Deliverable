@@ -7,3 +7,6 @@
 # Compiled class files
 *.class
 out/
+
+
+*/*/*/src/main/resources/
