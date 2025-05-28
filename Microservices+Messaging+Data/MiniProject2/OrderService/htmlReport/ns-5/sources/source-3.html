@@ -1,0 +1,142 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > OrderService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.practice.OrderService.service</a>
+</div>
+
+<h1>Coverage Summary for Class: OrderService (com.practice.OrderService.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OrderService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    6.7%
+  </span>
+  <span class="absValue">
+    (1/15)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.practice.OrderService.service;
+&nbsp;
+&nbsp;import com.practice.OrderService.dto.OrderEvent;
+&nbsp;import com.practice.OrderService.dto.OrderRequest;
+&nbsp;import com.practice.OrderService.dto.OrderResponse;
+&nbsp;import com.practice.OrderService.model.Order;
+&nbsp;import com.practice.OrderService.repository.OrderRepository;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;public class OrderService {</b>
+&nbsp;    @Autowired
+&nbsp;    private OrderRepository orderRepository;
+&nbsp;    @Autowired
+&nbsp;    private OrderEventPublisher publisher;
+&nbsp;
+&nbsp;    public OrderResponse placeOrder(OrderRequest request) {
+<b class="nc">&nbsp;        Order order = new Order();</b>
+<b class="nc">&nbsp;        order.setProduct(request.getProduct());</b>
+<b class="nc">&nbsp;        order.setQuantity(request.getQuantity());</b>
+<b class="nc">&nbsp;        order.setEmail(request.getEmail());</b>
+<b class="nc">&nbsp;        order.setStatus(&quot;CREATED&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        Order savedOrder = orderRepository.save(order);</b>
+&nbsp;
+<b class="nc">&nbsp;        OrderEvent event = new OrderEvent();</b>
+<b class="nc">&nbsp;        event.setOrderId(savedOrder.getId());</b>
+<b class="nc">&nbsp;        event.setProduct(savedOrder.getProduct());</b>
+<b class="nc">&nbsp;        event.setQuantity(savedOrder.getQuantity());</b>
+<b class="nc">&nbsp;        event.setEmail(savedOrder.getEmail());</b>
+<b class="nc">&nbsp;        event.setStatus(savedOrder.getStatus());</b>
+&nbsp;
+<b class="nc">&nbsp;        publisher.publishOrderEvent(event);</b>
+&nbsp;
+<b class="nc">&nbsp;        return new OrderResponse(savedOrder.getId(), savedOrder.getStatus());</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-05-28 10:47</div>
+</div>
+</body>
+</html>
