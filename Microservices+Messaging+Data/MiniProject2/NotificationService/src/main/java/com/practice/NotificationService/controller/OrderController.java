@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 
 @RestController
 @RequestMapping("/test")
@@ -19,7 +21,8 @@ public class OrderController {
 
     @GetMapping("/email")
     public ResponseEntity<String> sendTestEmail() {
-        OrderEvent dummy = new OrderEvent(1L, "Demo Product", 2, "evanedeepraj@gmail.com", "CREATED");
+        UUID id = UUID.randomUUID();
+        OrderEvent dummy = new OrderEvent(id, "Demo Product", 2, "evanedeepraj@gmail.com", "CREATED");
         emailService.sendOrderConfirmation(dummy);
         return ResponseEntity.ok("Email sent");
     }
