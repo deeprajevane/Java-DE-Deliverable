@@ -8,6 +8,8 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -27,8 +29,9 @@ class EmailServiceTest {
     void testSendOrderConfirmation_ShouldSendCorrectEmail() {
 
         OrderEvent event = new OrderEvent();
+        UUID id = UUID.randomUUID();
         event.setEmail("user@example.com");
-        event.setOrderId(1L);
+        event.setOrderId(id);
         event.setProduct("Laptop");
         event.setQuantity(1);
         event.setStatus("PLACED");

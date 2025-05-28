@@ -4,6 +4,8 @@ import com.practice.NotificationService.dto.OrderEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.UUID;
+
 import static org.mockito.Mockito.*;
 
 class OrderEventConsumerTest {
@@ -21,7 +23,8 @@ class OrderEventConsumerTest {
     @Test
     void testConsumeOrder_ShouldCallEmailService() {
         OrderEvent event = new OrderEvent();
-        event.setOrderId(1L);
+        UUID id = UUID.randomUUID();
+        event.setOrderId(id);
         event.setStatus("PLACED");
         event.setEmail("test@example.com");
 

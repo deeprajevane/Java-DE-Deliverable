@@ -11,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.UUID;
+
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -30,9 +32,9 @@ class OrderControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Email sent"));
-
+        UUID id = UUID.randomUUID();
         verify(emailService, times(1)).sendOrderConfirmation(argThat(event ->
-                event.getOrderId().equals(1L) &&
+                event.getOrderId().equals(id) &&
                         event.getEmail().equals("evanedeepraj@gmail.com") &&
                         event.getProduct().equals("Demo Product") &&
                         event.getQuantity() == 2 &&
