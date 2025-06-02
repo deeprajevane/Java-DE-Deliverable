@@ -57,6 +57,6 @@ public class MessageSubscriber {
 
     private void receiveMessage(PubsubMessage message, AckReplyConsumer consumer) {
         log.info("Received message: {}" , message.getData().toStringUtf8());
-        consumer.ack();  // Acknowledge after processing
+        consumer.ack();
     }
 }
