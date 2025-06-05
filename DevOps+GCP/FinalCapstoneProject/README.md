@@ -28,16 +28,16 @@ This project is a distributed microservices-based system for managing train book
 
 ## 📚 Tech Stack
 
-| Layer              | Technology                      |
-|-------------------|----------------------------------|
-| Backend Services  | Spring Boot                      |
-| Communication     | REST, Kafka                      |
-| Auth              | JWT (optional)                   |
-| Data Persistence  | MySQL                            |
-| Messaging Queue   | Apache Kafka                     |
-| File Handling     | Apache POI, BufferedReader       |
-| Testing           | JUnit, Mockito                   |
-| Build Tool        | Maven                            |
+| Layer              | Technology                 |
+|-------------------|----------------------------|
+| Backend Services  | Spring Boot                |
+| Communication     | REST, Kafka                |
+| Auth              | JWT (optional)             |
+| Data Persistence  | PostgresSQL                |
+| Messaging Queue   | Apache Kafka               |
+| File Handling     | Apache POI, BufferedReader |
+| Testing           | JUnit, Mockito             |
+| Build Tool        | Maven                      |
 
 ---
 
@@ -54,29 +54,28 @@ This project is a distributed microservices-based system for managing train book
 ---
 
 ## 📁 Project Structure
-
-train-booking-system/
-│
-├── booking-service/
-│ ├── controller/
-│ ├── service/
-│ ├── model/
-│ └── repository/
-│
-├── train-inventory-service/
-│ ├── controller/
-│ ├── service/
-│ └── repository/
-│
-├── user-service/
-│ ├── controller/
-│ └── service/
-│
-├── notification-service/
-│ └── listener/
-│
-└── common/
-└── dto/
+   ```bash
+      train-booking-system/
+      │
+      ├── booking-service/
+      │ ├── controller/
+      │ ├── service/
+      │ ├── model/
+      │ └── repository/
+      │
+      ├── train-inventory-service/
+      │ ├── controller/
+      │ ├── service/
+      │ └── repository/
+      │
+      ├── user-service/
+      │ ├── controller/
+      │ └── service/
+      │
+      ├── notification-service/
+      │ └── listener/
+        
+   ```
 ---
 ## Workflow Diagram
 ![img.png](img.png)
@@ -102,7 +101,7 @@ train-booking-system/
 - Java 17+
 - Maven
 - Docker (for Kafka)
-- MySQL
+- PostgresSQL
 
 ### 🔧 Setup Steps
 
