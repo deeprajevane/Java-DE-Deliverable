@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +29,10 @@ public class UserServiceImpl implements UserService {
         userRepository.findByEmail(dto.getEmail()).ifPresent(u -> {
             throw new RuntimeException("Email already registered");
         });
+
+
         User user = new User(null, dto.getName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()));
+        user.setId(UUID.randomUUID().toString());
         log.info("User created successfully");
         return userRepository.save(user);
     }
@@ -36,7 +40,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() {
         log.info("All user Data fetched!!");
-        return userRepository.findAll();
+        return (List<User>) userRepository.findAll();
     }
 
     @Override

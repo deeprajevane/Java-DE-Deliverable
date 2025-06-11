@@ -36,7 +36,7 @@ class BookingControllerTest {
     @BeforeEach
     void setUp() {
         booking = Booking.builder()
-                .id(1L)
+                .id("Book-1")
                 .trainNumber("12345")
                 .passengerName("John Doe")
                 .seatCount(2)
@@ -61,12 +61,12 @@ class BookingControllerTest {
 
     @Test
     void testCancelBooking() throws Exception {
-        doNothing().when(bookingService).cancelBooking(1L);
+        doNothing().when(bookingService).cancelBooking("Book-1");
 
         mockMvc.perform(delete("/api/bookings/1"))
                 .andExpect(status().isNoContent());
 
-        verify(bookingService, times(1)).cancelBooking(1L);
+        verify(bookingService, times(1)).cancelBooking("Book-1");
     }
 
     @Test

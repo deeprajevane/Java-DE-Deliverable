@@ -1,27 +1,32 @@
 package com.practice.BookingService.model;
 
-import jakarta.persistence.*;
+import com.google.cloud.spring.data.spanner.core.mapping.PrimaryKey;
+
+import com.google.cloud.spring.data.spanner.core.mapping.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Entity
+
 @Table(name = "bookings")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Booking {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false)
+    @PrimaryKey
+    private String id;
+
     private String trainNumber;
-    @Column(nullable = false)
+
     private String passengerName;
-    @Column(nullable = false)
+
     private LocalDate travelDate;
-    @Column(nullable = false)
+
     private int seatCount;
-    @Column(nullable = false)
+
     private String status;
 }

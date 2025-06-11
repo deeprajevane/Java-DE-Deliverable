@@ -7,21 +7,29 @@ import com.practice.BookingService.exception.InsufficientSeatsException;
 import com.practice.BookingService.exception.TrainNotFoundException;
 import com.practice.BookingService.model.Booking;
 import com.practice.BookingService.repository.BookingRepository;
+import com.practice.BookingService.service.BookingServices;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class BookingServiceImpl implements com.practice.BookingService.service.Impl.BookingServices {
+public class BookingServiceImpl implements BookingServices {
 
     private final BookingRepository bookingRepository;
     private final KafkaTemplate<String, TrainBookingEvent> kafkaTemplate;
     private final TrainClient trainClient;
 
+    private final static Logger log = LoggerFactory.getLogger(BookingServiceImpl.class.getName());
+
     public Booking bookTicket(Booking booking) {
+
+        log.info("Incoming request: {}", booking);
 
         Train train = trainClient.getTrainByNumber(booking.getTrainNumber());
         if (train == null) {
@@ -33,6 +41,8 @@ public class BookingServiceImpl implements com.practice.BookingService.service.I
                     train.getAvailableSeats());
         }
         booking.setStatus("CONFIRMED");
+        booking.setId(generateBookingId());
+        log.info("booking information : {}",booking);
         Booking saved = bookingRepository.save(booking);
 
         TrainBookingEvent event = new TrainBookingEvent(
@@ -41,11 +51,22 @@ public class BookingServiceImpl implements com.practice.BookingService.service.I
                 saved.getSeatCount()
         );
 
-        kafkaTemplate.send("booking-events", event);
+        try {
+            kafkaTemplate.send("booking-events", event);
+            log.info("Event triggered successfully: {}",event);
+
+        } catch (Exception e) {
+            log.error("Failed to send Kafka message", e);
+            throw e;
+        }
         return saved;
     }
 
-    public void cancelBooking(Long id) {
+    public String generateBookingId() {
+        return "BOOK-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+    }
+
+    public void cancelBooking(String id) {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
         booking.setStatus("CANCELLED");
@@ -57,11 +78,17 @@ public class BookingServiceImpl implements com.practice.BookingService.service.I
                 booking.getSeatCount()
         );
 
-        kafkaTemplate.send("booking-events", event);
+        try {
+            kafkaTemplate.send("booking-events", event);
+            log.info("Event triggered successfully: {}",event);
+        } catch (Exception e) {
+            log.error("Failed to send Kafka message", e);
+            throw e;
+        }
     }
 
     public List<Booking> getAllBookings() {
-        return bookingRepository.findAll();
+        return (List<Booking>) bookingRepository.findAll();
     }
 
     private void publishBookingEvent(String status, Booking booking) {

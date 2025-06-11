@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka
+
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+
+
+  booking-service:
+    build:
+      context: ./BookingService
+    container_name: booking-service
+    ports:
+      - "8087:8087"
+    volumes:
+      - ./gcp-employee-112-f1f08708c8a9.json:/app/gcp-employee.json
+
+    environment:
+      SPRING_CLOUD_GCP_PROJECT_ID: gcp-employee-112
+      SPRING_CLOUD_GCP_SPANNER_INSTANCE_ID: employee-instance
+      SPRING_CLOUD_GCP_SPANNER_DATABASE: user-db
+      SPRING_CLOUD_GCP_CREDENTIALS_LOCATION: file:/app/gcp-employee-112-f1f08708c8a9.json
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+  train-inventory-service:
+    build:
+      context: ./Train-Inventory-Service
+    container_name: train-inventory-service
+    ports:
+      - "8091:8091"
+    depends_on:
+      - kafka
+    volumes:
+      - ./gcp-employee-112-f1f08708c8a9.json:/app/gcp-employee.json
+    environment:
+      SPRING_CLOUD_GCP_PROJECT_ID: gcp-employee-112
+      SPRING_CLOUD_GCP_SPANNER_INSTANCE_ID: employee-instance
+      SPRING_CLOUD_GCP_SPANNER_DATABASE: user-db
+      SPRING_CLOUD_GCP_CREDENTIALS_LOCATION: file:/app/gcp-employee-112-f1f08708c8a9.json
+
+  user-service:
+    build:
+      context: ./UserService
+    container_name: user-service
+    ports:
+      - "8093:8093"
+    
+    environment:
+      SPRING_CLOUD_GCP_PROJECT_ID: gcp-employee-112
+      SPRING_CLOUD_GCP_SPANNER_INSTANCE_ID: employee-instance
+      SPRING_CLOUD_GCP_SPANNER_DATABASE: user-db
+      SPRING_CLOUD_GCP_CREDENTIALS_LOCATION: file:/app/gcp-employee-112-f1f08708c8a9.json
+
+  notification-service:
+    build:
+      context: ./NotificationService
+    container_name: notification-service
+    ports:
+      - "8089:8089"
+    depends_on:
+      - booking-service
+      - kafka
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+

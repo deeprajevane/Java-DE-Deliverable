@@ -29,6 +29,7 @@ public class TrainInventoryService {
 
     public Train addOrUpdateTrain(Train train) {
         try {
+
             return trainRepository.save(train);
         } catch (Exception e) {
             log.error("Error while saving or updating train: {}", train, e);
@@ -49,7 +50,7 @@ public class TrainInventoryService {
 
     public List<Train> allTrain() {
         try {
-            return trainRepository.findAll();
+            return (List<Train>) trainRepository.findAll();
         } catch (Exception e) {
             log.error("Error while retrieving all trains", e);
             throw new RuntimeException("Unable to retrieve train list. " + e.getMessage(), e);

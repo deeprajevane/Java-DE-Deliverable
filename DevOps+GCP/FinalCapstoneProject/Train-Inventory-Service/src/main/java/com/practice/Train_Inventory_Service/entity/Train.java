@@ -1,8 +1,9 @@
 package com.practice.Train_Inventory_Service.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.google.cloud.spring.data.spanner.core.mapping.PrimaryKey;
+
+
+import com.google.cloud.spring.data.spanner.core.mapping.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,14 +11,14 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Entity
+
 @Table(name = "trains")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Train {
-    @Id
+    @PrimaryKey
     private String trainNumber;
     private String trainName;
     private String source;

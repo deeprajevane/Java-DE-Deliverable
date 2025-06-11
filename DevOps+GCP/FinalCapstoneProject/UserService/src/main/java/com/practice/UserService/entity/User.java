@@ -1,32 +1,23 @@
 package com.practice.UserService.entity;
 
-import jakarta.persistence.*;
+import com.google.cloud.spring.data.spanner.core.mapping.PrimaryKey;
+import com.google.cloud.spring.data.spanner.core.mapping.Table;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 
-import java.util.UUID;
-
-
-@Entity
+@Table(name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id")
-    private UUID id;
+    @PrimaryKey
+    private String id; // UUID as string
 
-
-    @Column(name = "name",nullable = false)
     private String name;
 
-    @Column(unique = true,name = "email")
     @Email
     private String email;
 
-    @Column(name = "password",nullable = false, length = 60)
     private String password;
 }
