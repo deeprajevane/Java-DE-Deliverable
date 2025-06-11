@@ -1,6 +1,7 @@
 package com.practice.BookingService.controller;
 
 import com.practice.BookingService.model.Booking;
+import com.practice.BookingService.payload.JSendResponse;
 import com.practice.BookingService.service.Impl.BookingServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,20 +18,20 @@ public class BookingController {
     private final BookingServiceImpl bookingService;
 
     @PostMapping
-    public ResponseEntity<Booking> bookTicket(@RequestBody Booking booking) {
+    public ResponseEntity<JSendResponse<Booking>> bookTicket(@RequestBody Booking booking) {
         Booking saved = bookingService.bookTicket(booking);
-        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+        return new ResponseEntity<>(JSendResponse.success(saved), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> cancelBooking(@PathVariable Long id) {
+    public ResponseEntity<JSendResponse<Void>> cancelBooking(@PathVariable String id) {
         bookingService.cancelBooking(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(JSendResponse.success(null));
     }
 
     @GetMapping
-    public ResponseEntity<List<Booking>> getAllBookings() {
+    public ResponseEntity<JSendResponse<List<Booking>>> getAllBookings() {
         List<Booking> bookings = bookingService.getAllBookings();
-        return ResponseEntity.ok(bookings);
+        return ResponseEntity.ok(JSendResponse.success(bookings));
     }
 }

@@ -40,7 +40,7 @@ class UserControllerTest {
     private User testUser;
     private UserDto testUserDto;
     private LoginDTO testLoginDTO;
-    UUID uuid = UUID.randomUUID();
+    String uuid = UUID.randomUUID().toString();
     @BeforeEach
     void setUp() {
         testUser = new User();

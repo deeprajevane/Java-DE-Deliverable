@@ -42,7 +42,7 @@ class BookingServiceImplTest {
 
     private Booking getSampleBooking() {
         return Booking.builder()
-                .id(1L)
+                .id("Book-1")
                 .trainNumber("12345")
                 .seatCount(2)
                 .status(null)
@@ -99,10 +99,10 @@ class BookingServiceImplTest {
         Booking booking = getSampleBooking();
         booking.setStatus("CONFIRMED");
 
-        when(bookingRepository.findById(1L)).thenReturn(Optional.of(booking));
+        when(bookingRepository.findById("Book-1")).thenReturn(Optional.of(booking));
         when(bookingRepository.save(any(Booking.class))).thenReturn(booking);
 
-        bookingService.cancelBooking(1L);
+        bookingService.cancelBooking("Book-1");
 
         assertEquals("CANCELLED", booking.getStatus());
         verify(kafkaTemplate, times(1)).send(eq("booking-events"), any(TrainBookingEvent.class));
